@@ -123,18 +123,13 @@ var data = [
   },
   {
     type: 'QCM',
-    question: 'Un espace complet préhilbertien est appelé',
+    question: 'Un espace complet préhilbertien est appelé :',
     rep: ['Espace de Banach','Espace de Hermitte','Espace de Jones','Espace de Hilbert'],
   },
   {
     type: 'QCM',
     question: 'Le lemme de Rieman Lebesgue est valable :',
     rep: ['Pour une fonction continue','Pour une fonction continue par morceaux','Pour une fonction en escalier','Pour une fonction 2-Pi-périodique'],
-  },
-  {
-    type: 'QCM',
-    question: 'Un espace complet préhilbertien est appelé',
-    rep: ['Espace de Banach','Espace de Hermitte','Espace de Jones','Espace de Hilbert'],
   }
 ]
 
@@ -196,6 +191,21 @@ function App() {
 
   const [open, setOpen] = React.useState(false);
 
+  const [form, setValues] = React.useState({
+    question: '',
+    rep1:'',
+    rep2:'',
+    rep3:'',
+    rep4:''
+  });
+
+  const updateField = e => {
+    setValues({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -203,6 +213,13 @@ function App() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const addSlide = () => {
+
+    var obj = {type: 'QCM',question: form.question,rep: [form.rep1,form.rep2,form.rep3,form.rep4]};
+
+    data.push(obj);
+  }
 
 
   return (
@@ -241,9 +258,9 @@ function App() {
                   <NavLink to={`/slide/${index + 1}`} style={{ textDecoration: 'none' , color:'white'}}>
                   <ButtonBase>
                     <CardContent>
+                      <h3>Slide {index + 1} ({item.type}) : </h3>
 
-                      <h3>Slide {index + 1}</h3>
-
+                      <h4>{item.question}</h4>
                     </CardContent>
 
                     </ButtonBase>
@@ -257,8 +274,9 @@ function App() {
                   <ButtonBase>
                     <CardContent>
 
-                      <h3>Slide {index + 1}</h3>
+                      <h3>Slide {index + 1} ({item.type}) :</h3>
 
+                      <h4>{item.question}</h4>
                     </CardContent>
 
                     </ButtonBase>
@@ -282,49 +300,62 @@ function App() {
               <DialogContent>
 
                 <TextField
-                  
                   margin="dense"
-                  id="name"
+                  id="question"
+                  name="question"
                   label="Type your question :"
+                  value={form.question}
+                  onChange={updateField}
                   fullWidth
                 />
 
                 <TextField
                   
                   margin="dense"
-                  id="name"
+                  id="rep1"
+                  name="rep1"
                   label="Answer 1 :"
+                  value={form.rep1}
+                  onChange={updateField}
                   fullWidth
                 />
 
                 <TextField
                   
                   margin="dense"
-                  id="name"
+                  id="rep2"
+                  name="rep2"
                   label="Answer 2 :"
+                  value={form.rep2}
+                  onChange={updateField}
                   fullWidth
                 />
 
                 <TextField
                   
                   margin="dense"
-                  id="name"
+                  id="rep3"
+                  name="rep3"
                   label="Answer 3 :"
+                  value={form.rep3}
+                  onChange={updateField}
                   fullWidth
                 />
 
                 <TextField
-                  
                   margin="dense"
-                  id="name"
+                  id="rep4"
+                  name="rep4"
                   label="Answer 4 :"
+                  value={form.rep4}
+                  onChange={updateField}
                   fullWidth
                 />
 
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={(event) => { handleClose(); addSlide()}} color="primary">
                   OK
                 </Button>
               </DialogActions>
