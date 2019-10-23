@@ -16,7 +16,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { sizing } from '@material-ui/system';
 import logo from './logo.png';
 import { BrowserRouter as Router, Route,NavLink, Link ,withRouter} from "react-router-dom";
 import Qcm from './Qcm';
@@ -93,6 +92,24 @@ const useStyles = makeStyles(theme => ({
     height: 60,
     width: 60,
     marginTop: theme.spacing(3),
+    transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",
+    "&:hover": {
+        
+        transform: "scale(1.1)",
+      }
+  },
+  play: {
+    backgroundColor: '#FFFFFF',
+    height: 80,
+    width: 80,
+
+    transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",
+
+    "&:hover": {
+        
+        transform: "scale(1.1)",
+      }
+
   },
   quzz: {
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -177,6 +194,26 @@ const QcmPage = ({ match, location }) => {
             </div>
 
             <img src={logo} style={{width: 150, height: 90, marginTop: 35}} alt="Logo" />
+
+            
+            <div className="App-row" style={{ marginLeft: 950 }}>
+
+            <Avatar className={classes.play} >
+            <IconButton>
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            </IconButton>
+            </Avatar>
+
+
+            <Avatar className={classes.play} style={{ marginLeft: 20 }}>
+            <IconButton>
+                <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </IconButton>
+            </Avatar>
+
+             </div>
+
+            
 
           </header>
 
@@ -287,13 +324,13 @@ function App() {
 
             })}
 
-            <IconButton onClick={handleClickOpen}>
+            
 
             <Avatar className={classes.avatar} >
+            <IconButton onClick={handleClickOpen}>
               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-            </Avatar>
-
             </IconButton>
+            </Avatar>
 
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Create a quizz</DialogTitle>
@@ -369,6 +406,9 @@ function App() {
       <main>
 
         <Route exact path="/slide/:userId" component={QcmPage} />
+
+
+
 
       </main>
 
