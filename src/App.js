@@ -131,6 +131,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
+// Ah ouais
+
 var data = [
 
   {
@@ -228,6 +231,8 @@ function App() {
 
   const [open, setOpen] = React.useState(false);
 
+  const [type, setType] = React.useState("");
+
   const [form, setValues] = React.useState({
     question: '',
     rep1:'',
@@ -235,6 +240,10 @@ function App() {
     rep3:'',
     rep4:''
   });
+
+  const handleTypeChange = event => {
+    setType(event.target.value);
+  };
 
   const updateField = e => {
     setValues({
@@ -336,6 +345,10 @@ function App() {
               <DialogTitle id="form-dialog-title">Create a quizz</DialogTitle>
               <DialogContent>
 
+
+
+
+
                 <TextField
                   margin="dense"
                   id="question"
@@ -388,6 +401,8 @@ function App() {
                   onChange={updateField}
                   fullWidth
                 />
+
+
 
               </DialogContent>
 
