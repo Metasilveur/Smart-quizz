@@ -33,6 +33,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Slide from '@material-ui/core/Slide';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -108,6 +110,7 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
         
         transform: "scale(1.1)",
+        //transform: "rotate(180deg)",
       }
 
   },
@@ -129,10 +132,27 @@ const useStyles = makeStyles(theme => ({
         background: 'linear-gradient(45deg, #FE2553FF 30%, #FF610DFF 90%)',
       }
   },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 'auto',
+    width: 'fit-content',
+  },
+  formControl: {
+    marginTop: theme.spacing(2),
+    minWidth: 120,
+  },
+  formControlLabel: {
+    marginTop: theme.spacing(1),
+  },
 }));
 
 
 // Ah ouais
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 var data = [
 
@@ -267,6 +287,104 @@ function App() {
     data.push(obj);
   }
 
+  function renderType() {
+
+    if(type == "QCM"){
+      return(
+
+        <div>
+
+                <TextField
+                  margin="dense"
+                  id="question"
+                  name="question"
+                  label="Type your question :"
+                  value={form.question}
+                  onChange={updateField}
+                  fullWidth
+                />
+
+                <TextField
+                  
+                  margin="dense"
+                  id="rep1"
+                  name="rep1"
+                  label="Answer 1 :"
+                  value={form.rep1}
+                  onChange={updateField}
+                  fullWidth
+                />
+
+                <TextField
+                  
+                  margin="dense"
+                  id="rep2"
+                  name="rep2"
+                  label="Answer 2 :"
+                  value={form.rep2}
+                  onChange={updateField}
+                  fullWidth
+                />
+
+                <TextField
+                  
+                  margin="dense"
+                  id="rep3"
+                  name="rep3"
+                  label="Answer 3 :"
+                  value={form.rep3}
+                  onChange={updateField}
+                  fullWidth
+                />
+
+                <TextField
+                  margin="dense"
+                  id="rep4"
+                  name="rep4"
+                  label="Answer 4 :"
+                  value={form.rep4}
+                  onChange={updateField}
+                  fullWidth
+                />
+          </div>
+        );
+    }
+    else if(type == "Vrai/Faux"){
+      return(
+        <div>
+
+                <TextField
+                  margin="dense"
+                  id="question"
+                  name="question"
+                  label="Type your question :"
+                  value={form.question}
+                  onChange={updateField}
+                  fullWidth
+                />
+
+          </div>
+        );
+    }
+    else if(type == "Question ouverte"){
+      return(
+        <div>
+
+                <TextField
+                  margin="dense"
+                  id="question"
+                  name="question"
+                  label="Type your question :"
+                  value={form.question}
+                  onChange={updateField}
+                  fullWidth
+                />
+
+          </div>
+        );
+    }
+
+  }
 
   return (
 
@@ -341,68 +459,35 @@ function App() {
             </IconButton>
             </Avatar>
 
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog TransitionComponent={Transition} open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Create a quizz</DialogTitle>
               <DialogContent>
 
 
+              <form className={classes.form} noValidate>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="type">Type</InputLabel>
+                  <Select
 
+                    value={type}
+                    onChange={handleTypeChange}
+                    inputProps={{
+                      name: 'type',
+                      id: 'type',
+                    }}
+                  >
+                    <MenuItem value="QCM">QCM</MenuItem>
+                    <MenuItem value="Vrai/Faux">Vrai/Faux</MenuItem>
+                    <MenuItem value="Question ouverte">Question ouverte</MenuItem>
+                  </Select>
+                </FormControl>
+              </form>
 
+              <div>
 
-                <TextField
-                  margin="dense"
-                  id="question"
-                  name="question"
-                  label="Type your question :"
-                  value={form.question}
-                  onChange={updateField}
-                  fullWidth
-                />
+              {renderType()}
 
-                <TextField
-                  
-                  margin="dense"
-                  id="rep1"
-                  name="rep1"
-                  label="Answer 1 :"
-                  value={form.rep1}
-                  onChange={updateField}
-                  fullWidth
-                />
-
-                <TextField
-                  
-                  margin="dense"
-                  id="rep2"
-                  name="rep2"
-                  label="Answer 2 :"
-                  value={form.rep2}
-                  onChange={updateField}
-                  fullWidth
-                />
-
-                <TextField
-                  
-                  margin="dense"
-                  id="rep3"
-                  name="rep3"
-                  label="Answer 3 :"
-                  value={form.rep3}
-                  onChange={updateField}
-                  fullWidth
-                />
-
-                <TextField
-                  margin="dense"
-                  id="rep4"
-                  name="rep4"
-                  label="Answer 4 :"
-                  value={form.rep4}
-                  onChange={updateField}
-                  fullWidth
-                />
-
-
+              </div>
 
               </DialogContent>
 
@@ -413,6 +498,7 @@ function App() {
               </DialogActions>
 
             </Dialog>
+
 
           </Grid>
 
