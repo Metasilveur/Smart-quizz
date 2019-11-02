@@ -19,6 +19,7 @@ app {
   color: white;
 }
 
+
 .app-row {
   display: flex;
   flex-direction: row;
