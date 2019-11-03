@@ -36,6 +36,7 @@ import Select from '@material-ui/core/Select';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 
+
 const useStyles = makeStyles(theme => ({
     card: {
 
@@ -47,6 +48,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",
+    "&:hover": {
+        
+        transform: "scale(1.03)",
+      }
 
   },
   root: {
@@ -425,6 +431,10 @@ function App() {
                       <h3>Slide {index + 1} ({item.type}) : </h3>
 
                       <h4>{item.question}</h4>
+
+                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+
+
                     </CardContent>
 
                     </ButtonBase>
@@ -434,17 +444,21 @@ function App() {
                 }
                 else{
                   return( <Card className={classes.card} >
-                    <Link to={`/slide/${index + 1}`} style={{ textDecoration: 'none' , color:'white'}}>
+
+                    <NavLink to={`/slide/${index + 1}`} style={{ textDecoration: 'none' , color:'white'}}>
                   <ButtonBase>
                     <CardContent>
 
                       <h3>Slide {index + 1} ({item.type}) :</h3>
 
                       <h4>{item.question}</h4>
+
+                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+
                     </CardContent>
 
                     </ButtonBase>
-                    </Link>
+                    </NavLink>
 
                   </Card>);
                 }
@@ -524,7 +538,6 @@ function App() {
 export default App;
 /*
             {datas.map(item => {
-
                  if(item.id == 1){
                   return(
                 <Route path={item.type} exact component={Qcm} />
@@ -540,10 +553,8 @@ export default App;
                 <Route path={item.type} exact component={Qcm3} />
                 );
               }
-
                 
             })}
-
                   <FormControl>
                     <InputLabel htmlFor="demo-controlled-open-select">Age</InputLabel>
                     <Select
@@ -565,5 +576,4 @@ export default App;
                       <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                   </FormControl>
-
 */
