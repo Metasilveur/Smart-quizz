@@ -41,6 +41,10 @@ const useStyles = makeStyles(theme => ({
     }
   },
 
+  blanc:{
+    marginTop:150,
+  },
+
   klasse: { //bouton classe
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     //background: 'linear-gradient(45deg, #696969 30%, #C0C0C0 90%)',
@@ -49,8 +53,8 @@ const useStyles = makeStyles(theme => ({
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     color: 'black',
 
-    position: 'absolute',
-    top: 160, left: 100, right: 0, bottom: 0,  
+    /*position: 'absolute',
+    top: 160, left: 100, right: 0, bottom: 0, */ 
 
    
     fontWeight: 'bold',
@@ -59,7 +63,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0 50px',
     //margin: 100,
     //marginLeft: 0,//theme.spacing(10),
-    marginTop: 100,
+    marginTop: 20,
     transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",    
     "&:hover": {
       transform: "scale(1.05)",
@@ -78,8 +82,6 @@ const useStyles = makeStyles(theme => ({
 const HomeQuizz = ({ match, location }) => {
    
 	const classes = useStyles();
-
-  const espace = '\u00a0'; //unicode espace
 
 
   const klasse = [
@@ -134,6 +136,7 @@ const HomeQuizz = ({ match, location }) => {
                 </Button> 
               </Link>     */}
 
+              <p className={classes.blanc}/>
 
               <table>
                 <tbody>
@@ -141,16 +144,15 @@ const HomeQuizz = ({ match, location }) => {
                     <tr key={id}>
                       <td> 
 
-                      <Link to="Classe1">
+                      <Link to={`/Classes/${classe}`}>
                         <Button className={classes.klasse} 
                                 shape="chubby" 
                                 variant="contained" 
                                 color="primary"> 
-                          <p>{classe}</p>
+                          <p>Classe {classe}</p>
                         </Button> 
-                      </Link>  
+                      </Link> 
                        </td>
-                        
                         {/*<h2>Classe{espace}{classe}</h2>*/}
                       
                     </tr>

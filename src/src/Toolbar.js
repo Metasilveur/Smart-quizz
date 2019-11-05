@@ -20,7 +20,10 @@ import StatsQuizz from './Stats'
 import EnCoursQuizz from './En cours'
 import ProfilQuizz from './Profil'
 import CreationQuizz from './Creation'
-import Classe1Quizz from './Classe1'
+import Classe31Quizz from './Classes/31'
+import Classe32Quizz from './Classes/32'
+import Classe33Quizz from './Classes/33'
+import Classe34Quizz from './Classes/34'
 
 
 
@@ -204,12 +207,24 @@ const ToolbarQuizz = ({ match, location }) => {
               <ProfilQuizz/>
             </Route>
 
-            <Route  exact path="/Creation">
+            <Route  path="/Creation">
                 <CreationQuizz/>
             </Route>
 
-            <Route  exact path="/Classe1">
-                <Classe1Quizz/>
+            <Route  exact path="/Classes/31">
+                <Classe31Quizz/>
+            </Route>
+
+            <Route  exact path="/Classes/32">
+                <Classe32Quizz/>
+            </Route>
+
+            <Route  exact path="/Classes/33">
+                <Classe33Quizz/>
+            </Route>
+
+            <Route  exact path="/Classes/34">
+                <Classe34Quizz/>
             </Route>
 
           </Switch>
