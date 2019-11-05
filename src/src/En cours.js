@@ -2,16 +2,10 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Button } from 'reactstrap'
-
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 
+import {Link} from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,29 +16,37 @@ const useStyles = makeStyles(theme => ({
       marginTop: '100px',
     },
 
-    toolbar:{
-    //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    //background: 'linear-gradient(45deg, #708090 30%, #2F4F4F 90%)' //gris clair
-    background: 'linear-gradient(45deg, #282c34 30%, #2F4F4F 90%)'
+  toolbar:{
+  //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',    //background: 'linear-gradient(45deg, #708090 30%, #2F4F4F 90%)' //gris clair
+  background: 'linear-gradient(45deg, #282c34 30%, #2F4F4F 90%)'
   },
 
-   bencours: { //bouton encours
+
+  rejoindre: { //bouton rejoindre
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    border: 10,
-    borderRadius: 30,
+    //background: 'linear-gradient(45deg, #696969 30%, #C0C0C0 90%)',
+    border: 50,
+    borderRadius: 70,
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     color: 'black',
-    fontWeight: 'bold',
-    height: 60,
-    width : 150,
-    padding: '0 50px',
-
+    
     position: 'absolute',
-    top: 5, left: 490, right: 0, bottom: 0,
+    top: 200, left: 1250, right: 0, bottom: 0,
+    
 
+    fontWeight: 'bold',
+    height: 80,
+    width: 220,
+    padding: '0 50px',
+    //margin: 100,
+    marginLeft: -600,//theme.spacing(10),
+    marginTop: 40,
     transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",    
     "&:hover": {
       transform: "scale(1.1)",
+      //transform: "rotate(180deg)",
+      //background: 'linear-gradient(45deg, #708090 30%, #2F4F4F 90%)', //gris clair
+      //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', //rougeclair
       background: 'linear-gradient(45deg, #FE2553FF 30%, #FF610DFF 90%)', //rougefonce
     }
   },
@@ -65,6 +67,17 @@ const EnCoursQuizz = ({ match, location, encours }) => {
                   {encours === 'oui' ? <p>QUIZZ EN COURS...</p> : <p>PAS DE QUIZZ EN COURS</p> }
 
               </div>
+
+              {encours=== 'oui'&& 
+                <Link to="/Rejoindre">
+                  <Button className={classes.rejoindre} 
+                          shape="chubby" 
+                          variant="contained" 
+                          color="primary"> 
+                    <p>Rejoindre</p>
+                  </Button> 
+                </Link>
+              }
 
             </header>  
         </div>  

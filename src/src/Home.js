@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     width: 220,
     padding: '0 50px',
     //margin: 100,
-    marginLeft: -700,//theme.spacing(10),
+    marginLeft: -600,//theme.spacing(10),
     marginTop: 40,
     transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",    
     "&:hover": {
@@ -54,12 +54,12 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
 
     /*position: 'absolute',
-    top: 160, left: 100, right: 0, bottom: 0, */ 
+    top: 160, left: 100, right: 0, bottom: 0, */
 
    
     fontWeight: 'bold',
     height: 50,
-    width: 1200,
+    width: 550,
     padding: '0 50px',
     //margin: 100,
     //marginLeft: 0,//theme.spacing(10),
@@ -143,18 +143,15 @@ const HomeQuizz = ({ match, location }) => {
                   {klasse.map(({ id, classe}) => (                      
                     <tr key={id}>
                       <td> 
-
-                      <Link to={`/Classes/${classe}`}>
-                        <Button className={classes.klasse} 
-                                shape="chubby" 
-                                variant="contained" 
-                                color="primary"> 
-                          <p>Classe {classe}</p>
-                        </Button> 
-                      </Link> 
-                       </td>
-                        {/*<h2>Classe{espace}{classe}</h2>*/}
-                      
+                        <Link to={`/Classes/${classe}`}>
+                          <Button className={classes.klasse} 
+                                  shape="chubby" 
+                                  variant="contained" 
+                                  color="primary"> 
+                            <p>Classe {classe}</p>
+                          </Button> 
+                        </Link> 
+                      </td>                      
                     </tr>
                   ))}
                 </tbody>

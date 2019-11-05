@@ -20,10 +20,12 @@ import StatsQuizz from './Stats'
 import EnCoursQuizz from './En cours'
 import ProfilQuizz from './Profil'
 import CreationQuizz from './Creation'
-import Classe31Quizz from './Classes/31'
-import Classe32Quizz from './Classes/32'
-import Classe33Quizz from './Classes/33'
-import Classe34Quizz from './Classes/34'
+import Classe31Quizz from './ClassesDossier/31'
+import Classe32Quizz from './ClassesDossier/32'
+import Classe33Quizz from './ClassesDossier/33'
+import Classe34Quizz from './ClassesDossier/34'
+
+import ClassesQuizz from './Classes'
 
 
 
@@ -164,14 +166,14 @@ const ToolbarQuizz = ({ match, location }) => {
                 </Button>  
               </Link>
 
-              {/*EnCoursQuizz.encours === "oui" &&*/}
+            
               <Link to="/EnCours">
                   <Button className={classes.bencours}
                           variant="contained" 
                           color="primary">
                     <p>En cours</p>
                   </Button>
-              </Link> 
+              </Link>
 
                   
               <Link to="/Profil">
@@ -187,50 +189,29 @@ const ToolbarQuizz = ({ match, location }) => {
           </AppBar>
 
 
-
-
-          <Switch>
+            
+            <Route  exact path="/" component={HomeQuizz}/>
+             
+            <Route  path="/Stats" component={StatsQuizz}/>
               
-            <Route  exact path="/">
-              <HomeQuizz/>
-            </Route>
+            <Route  path="/EnCours" component={()=> <EnCoursQuizz encours = "oui"/>} />
+            
+            <Route  path="/Rejoindre" component={CreationQuizz}/>
 
-            <Route  path="/Stats">
-              <StatsQuizz/>
-            </Route>
+            <Route  path="/Profil" component={ProfilQuizz}/>
 
-            <Route  path="/EnCours">
-              <EnCoursQuizz encours = "oui"/> 
-            </Route>
+            <Route  path="/Creation" component={CreationQuizz}/>
 
-            <Route  path="/Profil">
-              <ProfilQuizz/>
-            </Route>
+            {/*<Route  exact path="/Classes/:numero" component={ClassesQuizz}/>*/}
 
-            <Route  path="/Creation">
-                <CreationQuizz/>
-            </Route>
+            <Route  exact path="/Classes/31" component={Classe31Quizz}/>
 
-            <Route  exact path="/Classes/31">
-                <Classe31Quizz/>
-            </Route>
+            <Route  exact path="/Classes/32" component={Classe32Quizz}/>
 
-            <Route  exact path="/Classes/32">
-                <Classe32Quizz/>
-            </Route>
+            <Route  exact path="/Classes/33" component={Classe33Quizz}/>
 
-            <Route  exact path="/Classes/33">
-                <Classe33Quizz/>
-            </Route>
-
-            <Route  exact path="/Classes/34">
-                <Classe34Quizz/>
-            </Route>
-
-          </Switch>
-
-
-
+            <Route  exact path="/Classes/34" component={Classe34Quizz}/>
+      
 
         </header>  
       </div>  
