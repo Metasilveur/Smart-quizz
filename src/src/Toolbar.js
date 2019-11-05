@@ -27,10 +27,15 @@ import Classe1Quizz from './Classe1'
 
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({  
+
+  toolbar:{
+    //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    //background: 'linear-gradient(45deg, #708090 30%, #2F4F4F 90%)' //gris clair
+    background: 'linear-gradient(45deg, #282c34 30%, #2F4F4F 90%)'
+  },
  
-  avatar: { //bouton avatar
-    //background: 'linear-gradient(45deg, #696969 30%, #C0C0C0 90%)',
+  avatar: { //bouton profil
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     border: 0,
     borderRadius: 50,
@@ -39,21 +44,20 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     height: 60,
     padding: '0 50px',
-    margin: 10,
-    marginLeft:theme.spacing(90),
+
+    position: 'absolute',
+    top: 5, left: 1320, right: 0, bottom: 0,
+
     transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",
     "&:hover": {
       transform: "scale(1.1)",
       background: 'linear-gradient(45deg, #FE2553FF 30%, #FF610DFF 90%)', //rouge
-      //transform: "rotate(180deg)",
-      //background: 'linear-gradient(45deg, #708090 30%, #2F4F4F 90%)',
     }
   },
 
 
-  onglet: { //bouton onglet
+  home: { //bouton home
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    //background: 'linear-gradient(45deg, #696969 30%, #C0C0C0 90%)',
     border: 10,
     borderRadius: 30,
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
@@ -62,23 +66,62 @@ const useStyles = makeStyles(theme => ({
     height: 60,
     width : 150,
     padding: '0 50px',
-    margin: 10,
-    marginLeft:theme.spacing(1),
+
+    position: 'absolute',
+    top: 5, left: 150, right: 0, bottom: 0,
+
     transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",    
     "&:hover": {
       transform: "scale(1.1)",
-      //transform: "rotate(180deg)",
-      //background: 'linear-gradient(45deg, #708090 30%, #2F4F4F 90%)',
-      //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', //rougeclair
       background: 'linear-gradient(45deg, #FE2553FF 30%, #FF610DFF 90%)', //rougefonce
     }
   },
 
-  toolbar:{
-    //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    //background: 'linear-gradient(45deg, #708090 30%, #2F4F4F 90%)' //gris clair
-    background: 'linear-gradient(45deg, #282c34 30%, #2F4F4F 90%)'
+  
+
+  stats: { //bouton onglet
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    border: 10,
+    borderRadius: 30,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'black',
+    fontWeight: 'bold',
+    height: 60,
+    width : 150,
+    padding: '0 50px',
+
+    position: 'absolute',
+    top: 5, left: 320, right: 0, bottom: 0,
+
+    transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",    
+    "&:hover": {
+      transform: "scale(1.1)",
+      background: 'linear-gradient(45deg, #FE2553FF 30%, #FF610DFF 90%)', //rougefonce
+    }
   },
+
+
+  bencours: { //bouton encours
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    border: 10,
+    borderRadius: 30,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'black',
+    fontWeight: 'bold',
+    height: 60,
+    width : 150,
+    padding: '0 50px',
+
+    position: 'absolute',
+    top: 5, left: 490, right: 0, bottom: 0,
+
+    transition: "0.5s cubic-bezier(.47,1.64,.41,.8)",    
+    "&:hover": {
+      transform: "scale(1.1)",
+      background: 'linear-gradient(45deg, #FE2553FF 30%, #FF610DFF 90%)', //rougefonce
+    }
+  },
+
 
 }));
 
@@ -100,7 +143,7 @@ const ToolbarQuizz = ({ match, location }) => {
                    alt="Logo"/>
 
               <Link to="/">
-                <Button className={classes.onglet} 
+                <Button className={classes.home} 
                         shape="chubby" 
                         variant="contained" 
                         color="primary"> 
@@ -110,7 +153,7 @@ const ToolbarQuizz = ({ match, location }) => {
 
 
               <Link to="/Stats">
-                <Button className={classes.onglet} 
+                <Button className={classes.stats} 
                         shape="chubby" 
                         variant="contained" 
                         color="primary">
@@ -118,15 +161,14 @@ const ToolbarQuizz = ({ match, location }) => {
                 </Button>  
               </Link>
 
-
+              {/*EnCoursQuizz.encours === "oui" &&*/}
               <Link to="/EnCours">
-                  <Button className={classes.onglet} 
-                          shape="chubby" 
+                  <Button className={classes.bencours}
                           variant="contained" 
                           color="primary">
                     <p>En cours</p>
                   </Button>
-              </Link>
+              </Link> 
 
                   
               <Link to="/Profil">
@@ -155,7 +197,7 @@ const ToolbarQuizz = ({ match, location }) => {
             </Route>
 
             <Route  path="/EnCours">
-              <EnCoursQuizz encours = "non"/> 
+              <EnCoursQuizz encours = "oui"/> 
             </Route>
 
             <Route  path="/Profil">

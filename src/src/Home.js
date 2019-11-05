@@ -50,8 +50,7 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
 
     position: 'absolute',
-    top: 160, left: 100, right: 0, bottom: 0,
-    
+    top: 160, left: 100, right: 0, bottom: 0,  
 
    
     fontWeight: 'bold',
@@ -80,6 +79,37 @@ const HomeQuizz = ({ match, location }) => {
    
 	const classes = useStyles();
 
+  const espace = '\u00a0'; //unicode espace
+
+
+  const klasse = [
+
+    {id: 1, classe: 31},
+    {id: 2, classe: 32},
+    {id: 3, classe: 33},
+    {id: 4, classe: 34},
+  ];
+
+   /*var buttons = [];
+
+     for (var i = 0; i < 5; i++) {
+         buttons.push(
+        
+                        <Button className={classes.klasse} 
+                                shape="chubby" 
+                                variant="contained" 
+                                color="primary"> 
+                          <p>OK</p>
+                          <br/>
+                        </Button> 
+
+                    
+            
+         )
+ }*/
+
+ 
+
     return(
 
     	<div >
@@ -95,14 +125,40 @@ const HomeQuizz = ({ match, location }) => {
                 </Button> 
               </Link>
 
-              <Link to="Classe1">
+              {/* <Link to="Classe1">
                 <Button className={classes.klasse} 
                         shape="chubby" 
                         variant="contained" 
                         color="primary"> 
                   <p>Classe 1</p>
                 </Button> 
-              </Link>
+              </Link>     */}
+
+
+              <table>
+                <tbody>
+                  {klasse.map(({ id, classe}) => (                      
+                    <tr key={id}>
+                      <td> 
+
+                      <Link to="Classe1">
+                        <Button className={classes.klasse} 
+                                shape="chubby" 
+                                variant="contained" 
+                                color="primary"> 
+                          <p>{classe}</p>
+                        </Button> 
+                      </Link>  
+                       </td>
+                        
+                        {/*<h2>Classe{espace}{classe}</h2>*/}
+                      
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+             {/*} {buttons}*/}
               
 
             </header>  
