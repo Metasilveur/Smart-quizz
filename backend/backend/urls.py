@@ -21,6 +21,7 @@ from SmartQuizz import views
 router = routers.DefaultRouter()                      
 router.register(r'Question', views.QuestionView, 'SmartQuizz')     
 router.register(r'Quiz', views.QuizView, 'SmartQuizz')  
+router.register(r'QCM', views.QCMView, 'SmartQuizz') 
 
 urlpatterns = [
     path('admin/', admin.site.urls),         
