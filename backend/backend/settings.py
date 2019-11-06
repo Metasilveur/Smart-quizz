@@ -39,10 +39,17 @@ INSTALLED_APPS = [
     'polymorphic',
     'django.contrib.staticfiles',
     'SmartQuizz.apps.SmartquizzConfig',
+    'corsheaders',           
+    'rest_framework',        
 ]
+
+CORS_ORIGIN_WHITELIST = (
+         'http://localhost:3000',
+     )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

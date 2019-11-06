@@ -3,29 +3,48 @@ from django.contrib.postgres.fields import ArrayField
 from polymorphic.models import PolymorphicModel
 
 class Question(PolymorphicModel):
+
+    class Meta:
+        verbose_name = "Question"
+
     QUESTION_CHOICES = [
             ('MCQ', 'QCM '),
             ('TF', 'Vrai_Faux'),
-            ('OQ', 'Open_Question'),
+            ('OQ', 'Open_Question'),    
      ]
     
     statement = models.CharField(max_length=100)
     #Representé par un objet de type datetime.timedelta 
-    timer = models.DurationField()
-    qu_type = models.CharField(max_length=1, choices = QUESTION_CHOICES, default = 'QCM')
+    timer = models.DurationField(null=True,
+                                             blank=True,
+                                             verbose_name=('timeslot_duration'),
+                                             help_text=('[DD] [HH:[MM:]]ss[.uuuuuu] format')
+                                             )
+    qu_type = models.CharField(max_length=3, choices = QUESTION_CHOICES, default = 'QCM')
         
 class QCM(Question):
+    class Meta:
+        verbose_name = "QCM"
+
     answers = ArrayField(models.CharField(max_length=100))
     #Contient les indices des bonnes réponses par rapport au tableau answers
     correct_answers = ArrayField(models.IntegerField(null=True, blank=True), blank=True,)
 
 class True_False(Question):
+    class Meta:
+        verbose_name = "Vrai Faux"
     answer = models.BooleanField()
     
 class Open_Question(Question):
+    class Meta:
+        verbose_name = "Question Ouverte"
+
     answer = models.CharField(max_length=1000)    
     
 class Quiz(models.Model):
+    class Meta:
+        verbose_name = "Quiz"
+
     questions = models.ManyToManyField(Question)
     online = models.BooleanField()
     
