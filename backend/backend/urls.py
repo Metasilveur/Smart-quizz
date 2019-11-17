@@ -18,10 +18,10 @@ from django.urls import path, include
 from rest_framework import routers                    
 from SmartQuizz import views                            
 
-router = routers.DefaultRouter()                      
-router.register(r'Question', views.QuestionView, 'SmartQuizz')     
+router = routers.DefaultRouter()                          
 router.register(r'Quiz', views.QuizView, 'SmartQuizz')  
 router.register(r'QCM', views.QCMView, 'SmartQuizz') 
+router.register(r'Question', views.QuestionView, 'SmartQuizz') 
 
 urlpatterns = [
     path('admin/', admin.site.urls),         

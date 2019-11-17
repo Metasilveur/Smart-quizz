@@ -16,6 +16,7 @@ class QCMSerializer(serializers.ModelSerializer):
     model = QCM
     fields = ('id', 'answers', 'correct_answers')
 
+
 class TrueFalseSerializer(serializers.ModelSerializer):
   class Meta:
     model = True_False
@@ -25,6 +26,7 @@ class OpenQuestionSerializer(serializers.ModelSerializer):
   class Meta:
     model = Open_Question
     fields = ('id', 'answer')
+
 
 class QuizSerializer(serializers.ModelSerializer):
   class Meta:

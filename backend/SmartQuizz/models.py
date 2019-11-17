@@ -13,7 +13,7 @@ class Question(PolymorphicModel):
             ('OQ', 'Open_Question'),    
      ]
     
-    statement = models.CharField(max_length=100)
+    statement = models.CharField(max_length=100, default="")
     #Representé par un objet de type datetime.timedelta 
     timer = models.DurationField(null=True,
                                              blank=True,
@@ -26,28 +26,29 @@ class QCM(Question):
     class Meta:
         verbose_name = "QCM"
 
-    answers = ArrayField(models.CharField(max_length=100))
+    answers = ArrayField(models.CharField(max_length=100, default=""))
     #Contient les indices des bonnes réponses par rapport au tableau answers
-    correct_answers = ArrayField(models.IntegerField(null=True, blank=True), blank=True,)
+    correct_answers = ArrayField(models.IntegerField(null=True, blank=True, default=-1), blank=True)
 
 class True_False(Question):
     class Meta:
         verbose_name = "Vrai Faux"
-    answer = models.BooleanField()
+    answer = models.BooleanField(default = False)
     
 class Open_Question(Question):
     class Meta:
         verbose_name = "Question Ouverte"
 
-    answer = models.CharField(max_length=1000)    
-    
+    answer = models.CharField(max_length=1000, default="", editable=False)    
+
 class Quiz(models.Model):
     class Meta:
         verbose_name = "Quiz"
 
     questions = models.ManyToManyField(Question)
     online = models.BooleanField()
-    
+
+
 '''
 class Student(models.Model):
     answered_quiz = models.ManyToManyField(Quiz, through='HasAnswered')
