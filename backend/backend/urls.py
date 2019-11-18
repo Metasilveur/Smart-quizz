@@ -21,6 +21,8 @@ from SmartQuizz import views
 router = routers.DefaultRouter()                          
 router.register(r'Quiz', views.QuizView, 'SmartQuizz')  
 router.register(r'QCM', views.QCMView, 'SmartQuizz') 
+router.register(r'TF', views.TrueFalseView, 'SmartQuizz') 
+router.register(r'OQ', views.OpenQuestionView, 'SmartQuizz') 
 router.register(r'Question', views.QuestionView, 'SmartQuizz') 
 
 urlpatterns = [

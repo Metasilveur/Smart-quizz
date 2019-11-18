@@ -14,18 +14,18 @@ class QuestionSerializer(serializers.ModelSerializer):
 class QCMSerializer(serializers.ModelSerializer):
   class Meta:
     model = QCM
-    fields = ('id', 'answers', 'correct_answers')
+    fields = ('id', 'statement', 'timer', 'qu_type', 'answers', 'correct_answers')
 
 
 class TrueFalseSerializer(serializers.ModelSerializer):
   class Meta:
     model = True_False
-    fields = ('id', 'answer')
+    fields = ('id', 'statement', 'timer', 'qu_type', 'answer')
 
 class OpenQuestionSerializer(serializers.ModelSerializer):
   class Meta:
     model = Open_Question
-    fields = ('id', 'answer')
+    fields = ('id', 'statement', 'timer', 'qu_type', 'answer')
 
 
 class QuizSerializer(serializers.ModelSerializer):
