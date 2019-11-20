@@ -153,9 +153,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-// Ah ouais
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -179,13 +176,23 @@ var data = [
   }
 ]
 
+
 const QcmPage = ({ match, location }) => {
 
   const classes = useStyles();
 
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
   const {
     params: { userId }
   } = match;
+
 
   return(
 
@@ -291,6 +298,94 @@ function App() {
     var obj = {type: 'QCM',question: form.question,rep: [form.rep1,form.rep2,form.rep3,form.rep4]};
 
     data.push(obj);
+  }
+
+  const removeSlide = () => {
+    data.splice(0, 1);
+  }
+
+  function doGetTEXT()  {
+
+    var url = "http://10.8.95.34:8000/api/Quiz/";
+    
+    var aPromise = fetch(url);
+
+    aPromise
+      .then(function(response) {
+          console.log("OK! Server returns a response object:");
+          return response.json();
+      })
+      .then(function(data){
+          console.log(data);
+
+      })
+      .catch(function(error)  {
+          console.log("Noooooo! Something error:");
+          console.log(error);
+
+      });
+   
+  }
+
+  function felomera()  {
+
+    var url = "http://10.8.95.34:8000/api/QCM/";
+    
+    var objTo = { statement:"Pourquoi la vie?", timer:"00:00:00", qu_type:"MCQ", answers:["a","b","c","la réponse d"], correct_answers:[3]};
+    console.log(JSON.stringify(objTo));
+    var aPromise = fetch(url, { 
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(objTo),
+        headers: {
+            'Content-Type':'application/json' 
+        }
+    });
+
+    aPromise
+      .then(function(response) {
+          console.log("OK! Server returns a response object:");
+          return response.json();
+      })
+      .then(function(data){
+          console.log(data["id"]);
+      })
+      .catch(function(error)  {
+          console.log("Noooooo! Something error:");
+          console.log(error);
+
+      });
+   
+  }
+
+  function felomelacha() {
+    var url = "http://10.8.95.34:8000/api/Quiz/";
+    
+    var objTo = { questions:[15,16], online:false};
+    console.log(JSON.stringify(objTo));
+
+    var aPromise = fetch(url, { 
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(objTo),
+        headers: {
+            'Content-Type':'application/json' 
+        }
+    });
+
+    aPromise
+      .then(function(response) {
+          console.log("OK! Server returns a response object:");
+          return response.json();
+      })
+      .then(function(data){
+          console.log(data);
+      })
+      .catch(function(error)  {
+          console.log("Noooooo! Something error:");
+          console.log(error);
+
+      });
   }
 
   function renderType() {
@@ -432,8 +527,9 @@ function App() {
 
                       <h4>{item.question}</h4>
 
-                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-
+                      <Button onClick={removeSlide} >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="white" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                      </Button>
 
                     </CardContent>
 
@@ -453,7 +549,9 @@ function App() {
 
                       <h4>{item.question}</h4>
 
-                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                      <Button onClick={removeSlide} >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="white" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                      </Button>
 
                     </CardContent>
 
@@ -506,7 +604,7 @@ function App() {
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={(event) => { handleClose(); addSlide()}} color="primary">
+                <Button onClick={(event) => { handleClose(); addSlide(); felomelacha()}} color="primary">
                   OK
                 </Button>
               </DialogActions>
@@ -536,44 +634,3 @@ function App() {
 }
 
 export default App;
-/*
-            {datas.map(item => {
-                 if(item.id == 1){
-                  return(
-                <Route path={item.type} exact component={Qcm} />
-                );
-              }
-               if(item.id == 2){
-                return(
-                <Route path={item.type} exact component={Qcm2} />
-                );
-              }
-               if(item.id == 3){
-                return(
-                <Route path={item.type} exact component={Qcm3} />
-                );
-              }
-                
-            })}
-                  <FormControl>
-                    <InputLabel htmlFor="demo-controlled-open-select">Age</InputLabel>
-                    <Select
-                      open={openForm}
-                      onClose={handleCloseForm}
-                      onOpen={handleOpenForm}
-                      value={age}
-                      onChange={handleChange}
-                      inputProps={{
-                        name: 'age',
-                        id: 'demo-controlled-open-select',
-                      }}
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-*/
