@@ -157,6 +157,34 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+// var objTo = { statement:"Pourquoi la vie?", timer:"00:00:00", qu_type:"MCQ", answers:["a","b","c","la réponse d"], correct_answers:[3]};
+
+var data = [
+  {
+    statement:'Il est plus facile de calculer l´exponentielle d´un endomorphisme :',
+    timer:'00:00:00',
+    qu_type:'MCQ',
+    answers:['Diagonalisable','Nilpotent','Symetrique','Orthogonal'],
+    correct_answers:[3],
+  },
+  {
+    statement:'Un espace complet préhilbertien est appelé :',
+    timer:'00:00:00',
+    qu_type:'MCQ',
+    answers:['Espace de Banach','Espace de Hermitte','Espace de Jones','Espace de Hilbert'],
+    correct_answers:[3],
+  },
+  {
+    statement:'Le lemme de Rieman Lebesgue est valable :',
+    timer:'00:00:00',
+    qu_type:'MCQ',
+    answers:['Pour une fonction continue','Pour une fonction continue par morceaux','Pour une fonction en escalier','Pour une fonction 2-Pi-périodique'],
+    correct_answers:[3],
+  }  
+]
+
+
+/*
 var data = [
 
   {
@@ -176,22 +204,158 @@ var data = [
   }
 ]
 
+*/
 
 const QcmPage = ({ match, location }) => {
 
   const classes = useStyles();
 
-
   const [open, setOpen] = React.useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
 
   const {
     params: { userId }
   } = match;
+
+  function doGetTEXT()  {
+
+    var url = "http://10.8.95.34:8000/api/Quiz/";
+
+    
+
+    var objTo = { statement:"Pourquoi la vie?", timer:"00:00:00", qu_type:"MCQ", answers:["a","b","c","la réponse d"], correct_answers:[3]};
+    console.log(data[0]);
+    console.log(objTo); 
+    //var objTo = data[i];
+    
+    var aPromise = fetch(url);
+
+    aPromise
+      .then(function(response) {
+          console.log("OK! Server returns a response object:");
+          return response.json();
+      })
+      .then(function(data){
+          console.log(data);
+
+      })
+      .catch(function(error)  {
+          console.log("Noooooo! Something error:");
+          console.log(error);
+
+      });
+   
+  }
+
+  function sendQCMData()  {//asyn
+
+    var idData = [];
+
+    for(var i=0;i<data.length;i++){
+
+      var url = "http://10.8.95.34:8000/api/QCM/";
+
+      var objTo = data[i];
+
+      console.log(JSON.stringify(objTo));
+
+      var aPromise = fetch(url, { 
+          method: 'POST',
+          mode: 'cors',
+          body: JSON.stringify(objTo),
+          headers: {
+              'Content-Type':'application/json' 
+          }
+      });
+
+      aPromise//awat
+        .then(function(response) {
+            console.log("OK! Server returns a response object:");
+            return response.json();
+        })
+        .then(function(data){
+            console.log(data["id"]);
+            idData.push(parseInt(data["id"],10));
+            console.log(idData);
+            setOpen(false);
+        })
+        .catch(function(error)  {
+            console.log("Noooooo! Something error:");
+            console.log(error);
+
+        });
+
+  }
+
+    var url = "http://10.8.95.34:8000/api/Quiz/";
+
+    console.log(idData);
+    console.log([15,16]);
+
+    var objTo = { questions:idData, online:false};
+    console.log(JSON.stringify(objTo));
+
+    var aPromise = fetch(url, { 
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(objTo),
+        headers: {
+            'Content-Type':'application/json' 
+        }
+    });
+
+    aPromise
+      .then(function(response) {
+          console.log("OK! Server returns a response object:");
+          return response.json();
+      })
+      .then(function(data){
+          console.log(data);
+      })
+      .catch(function(error)  {
+          console.log("Noooooo! Something error:");
+          console.log(error);
+
+      });
+  
+   
+  }
+
+
+/*
+  function sendQuizData() {
+
+    var url = "http://10.8.95.34:8000/api/Quiz/";
+
+    console.log(idData);
+    console.log([15,16]);
+
+    var objTo = { questions:idData, online:false};
+    console.log(JSON.stringify(objTo));
+
+    var aPromise = fetch(url, { 
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(objTo),
+        headers: {
+            'Content-Type':'application/json' 
+        }
+    });
+
+    aPromise
+      .then(function(response) {
+          console.log("OK! Server returns a response object:");
+          return response.json();
+      })
+      .then(function(data){
+          console.log(data);
+      })
+      .catch(function(error)  {
+          console.log("Noooooo! Something error:");
+          console.log(error);
+
+      });
+
+  }*/
 
 
   return(
@@ -203,16 +367,16 @@ const QcmPage = ({ match, location }) => {
 
             
 
-            <p>{data[userId - 1].question}</p>
+            <p>{data[userId - 1].statement}</p>
 
             <div className="App-row">
 
             <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
-              {data[userId - 1].rep[0]}
+              {data[userId - 1].answers[0]}
             </Button>
 
             <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
-              {data[userId - 1].rep[1]}
+              {data[userId - 1].answers[1]}
             </Button>
 
             </div>
@@ -220,11 +384,11 @@ const QcmPage = ({ match, location }) => {
             <div className="App-row">
 
             <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
-              {data[userId - 1].rep[2]}
+              {data[userId - 1].answers[2]}
             </Button>
 
             <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
-              {data[userId - 1].rep[3]}
+              {data[userId - 1].answers[3]}
             </Button>
             
             </div>
@@ -242,7 +406,7 @@ const QcmPage = ({ match, location }) => {
 
 
             <Avatar className={classes.play} style={{ marginLeft: 20 }}>
-            <IconButton>
+            <IconButton  onClick={sendQCMData}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </IconButton>
             </Avatar>
@@ -294,9 +458,7 @@ function App() {
   };
 
   const addSlide = () => {
-
-    var obj = {type: 'QCM',question: form.question,rep: [form.rep1,form.rep2,form.rep3,form.rep4]};
-
+    var obj = { statement: form.question, timer:"00:00:00", qu_type:'QCM', answers:[form.rep1,form.rep2,form.rep3,form.rep4], correct_answers:[3]};
     data.push(obj);
   }
 
@@ -304,89 +466,7 @@ function App() {
     data.splice(0, 1);
   }
 
-  function doGetTEXT()  {
 
-    var url = "http://10.8.95.34:8000/api/Quiz/";
-    
-    var aPromise = fetch(url);
-
-    aPromise
-      .then(function(response) {
-          console.log("OK! Server returns a response object:");
-          return response.json();
-      })
-      .then(function(data){
-          console.log(data);
-
-      })
-      .catch(function(error)  {
-          console.log("Noooooo! Something error:");
-          console.log(error);
-
-      });
-   
-  }
-
-  function felomera()  {
-
-    var url = "http://10.8.95.34:8000/api/QCM/";
-    
-    var objTo = { statement:"Pourquoi la vie?", timer:"00:00:00", qu_type:"MCQ", answers:["a","b","c","la réponse d"], correct_answers:[3]};
-    console.log(JSON.stringify(objTo));
-    var aPromise = fetch(url, { 
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(objTo),
-        headers: {
-            'Content-Type':'application/json' 
-        }
-    });
-
-    aPromise
-      .then(function(response) {
-          console.log("OK! Server returns a response object:");
-          return response.json();
-      })
-      .then(function(data){
-          console.log(data["id"]);
-      })
-      .catch(function(error)  {
-          console.log("Noooooo! Something error:");
-          console.log(error);
-
-      });
-   
-  }
-
-  function felomelacha() {
-    var url = "http://10.8.95.34:8000/api/Quiz/";
-    
-    var objTo = { questions:[15,16], online:false};
-    console.log(JSON.stringify(objTo));
-
-    var aPromise = fetch(url, { 
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(objTo),
-        headers: {
-            'Content-Type':'application/json' 
-        }
-    });
-
-    aPromise
-      .then(function(response) {
-          console.log("OK! Server returns a response object:");
-          return response.json();
-      })
-      .then(function(data){
-          console.log(data);
-      })
-      .catch(function(error)  {
-          console.log("Noooooo! Something error:");
-          console.log(error);
-
-      });
-  }
 
   function renderType() {
 
@@ -523,9 +603,9 @@ function App() {
                   <NavLink to={`/slide/${index + 1}`} style={{ textDecoration: 'none' , color:'white'}}>
                   <ButtonBase>
                     <CardContent>
-                      <h3>Slide {index + 1} ({item.type}) : </h3>
+                      <h3>Slide {index + 1} ({item.qu_type}) : </h3>
 
-                      <h4>{item.question}</h4>
+                      <h4>{item.statement}</h4>
 
                       <Button onClick={removeSlide} >
                       <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="white" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
@@ -545,9 +625,9 @@ function App() {
                   <ButtonBase>
                     <CardContent>
 
-                      <h3>Slide {index + 1} ({item.type}) :</h3>
+                      <h3>Slide {index + 1} ({item.qu_type}) :</h3>
 
-                      <h4>{item.question}</h4>
+                      <h4>{item.statement}</h4>
 
                       <Button onClick={removeSlide} >
                       <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="white" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
@@ -604,7 +684,7 @@ function App() {
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={(event) => { handleClose(); addSlide(); felomelacha()}} color="primary">
+                <Button onClick={(event) => { handleClose(); addSlide()}} color="primary">
                   OK
                 </Button>
               </DialogActions>
