@@ -180,6 +180,18 @@ var data = [
     answers:['Pour une fonction continue','Pour une fonction continue par morceaux','Pour une fonction en escalier','Pour une fonction 2-Pi-périodique'],
     correct_answers:[3],
   } ,
+  {
+    statement:'Le sens de la vie est 42',
+    timer:'00:00:00',
+    qu_type:'TF',
+    answer: true,
+  } ,
+  {
+    statement:'Citez des Pokémons de type Feu : ',
+    timer:'00:00:00',
+    qu_type:'OQ',
+    answer: 'Dracaufeu, Salamèche, Reptincel',
+  } ,
 ]
 
 const QcmPage = ({ match, location }) => {
@@ -243,7 +255,7 @@ const QcmPage = ({ match, location }) => {
           }
       });
 
-      aPromise//awat
+      aPromise// Coucou Pascal
         .then(function(response) {
             console.log("OK! Server returns a response object:");
             return response.json();
@@ -333,15 +345,11 @@ const QcmPage = ({ match, location }) => {
 
   }*/
 
+  function renderType(){
 
-  return(
-
-        <div className="App">
-          <header className="App-header">
-
-        <div className={classes.drawerHeader} />
-
-            
+    if(data[userId - 1].qu_type == "MCQ"){
+      return(
+        <div>
 
             <p>{data[userId - 1].statement}</p>
 
@@ -368,6 +376,58 @@ const QcmPage = ({ match, location }) => {
             </Button>
             
             </div>
+
+        </div>
+
+        );
+    }
+    else if(data[userId - 1].qu_type == "TF"){
+      return(
+        <div>
+
+            <p>{data[userId - 1].statement}</p>
+
+            <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
+              VRAI
+            </Button>
+
+            <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
+              FAUX
+            </Button>
+
+        </div>
+        );
+    }
+    else if(data[userId - 1].qu_type == "OQ"){
+      return(
+        <div>
+
+            <p>{data[userId - 1].statement}</p>
+
+            <TextField
+              margin="dense"
+              id="answer"
+              name="answer"
+              label="Type your answer : "
+              fullWidth
+            />
+        </div>
+        );
+    }
+
+
+  }
+
+
+  return(
+
+        <div className="App">
+          <header className="App-header">
+
+        <div className={classes.drawerHeader} />
+
+            {renderType()}
+
 
             <img src={logo} style={{width: 150, height: 90, marginTop: 35}} alt="Logo" />
 
@@ -411,7 +471,9 @@ function CreaQuizz() {
     rep1:'',
     rep2:'',
     rep3:'',
-    rep4:''
+    rep4:'',
+    tf:true,
+    oq:'LALALALALA',
   });
 
   const handleTypeChange = event => {
@@ -434,8 +496,19 @@ function CreaQuizz() {
   };
 
   const addSlide = () => {
-    var obj = { statement: form.question, timer:"00:00:00", qu_type:'QCM', answers:[form.rep1,form.rep2,form.rep3,form.rep4], correct_answers:[3]};
-    data.push(obj);
+
+    if(type == "QCM"){
+      var obj = { statement: form.question, timer:"00:00:00", qu_type:'MCQ', answers:[form.rep1,form.rep2,form.rep3,form.rep4], correct_answers:[3]};
+      data.push(obj);
+    }
+    else if(type == "Vrai/Faux"){
+      var obj = { statement: form.question, timer:"00:00:00", qu_type:'TF', answer:form.tf};
+      data.push(obj);
+    }
+    else if(type == "Question ouverte"){
+      var obj = { statement: form.question, timer:"00:00:00", qu_type:'OQ', answer:form.oq};
+      data.push(obj);
+    }
   }
 
   const removeSlide = () => {
@@ -508,6 +581,7 @@ function CreaQuizz() {
     }
     else if(type == "Vrai/Faux"){
       return(
+
         <div>
 
                 <TextField
@@ -521,6 +595,7 @@ function CreaQuizz() {
                 />
 
           </div>
+
         );
     }
     else if(type == "Question ouverte"){
