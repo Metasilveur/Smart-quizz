@@ -2,9 +2,6 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Button } from 'reactstrap'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-
 import {Link} from "react-router-dom";
 
 
@@ -54,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const EnCoursQuizz = ({ match, location, encours }) => {
+const EnCoursQuizz = ({ match, location, online }) => {
    
   const classes = useStyles();
 
@@ -64,11 +61,11 @@ const EnCoursQuizz = ({ match, location, encours }) => {
             <header className="app-header">
               
               <div className={classes.ecriture}>
-                  {encours === 'oui' ? <p>QUIZZ EN COURS...</p> : <p>PAS DE QUIZZ EN COURS</p> }
+                  {online ? <p>QUIZZ EN COURS...</p> : <p>PAS DE QUIZZ EN COURS</p> }
 
               </div>
 
-              {encours=== 'oui'&& 
+              {online&& 
                 <Link to="/Rejoindre">
                   <Button className={classes.rejoindre} 
                           shape="chubby" 
@@ -88,10 +85,12 @@ const EnCoursQuizz = ({ match, location, encours }) => {
 
 
 EnCoursQuizz.propTypes = {
-  encours: PropTypes.oneOf([
-      'oui',
-      'non',
-    ]).isRequired,
+  /*online: PropTypes.oneOf([
+      'true',
+      'false',
+    ]).isRequired,*/
+
+    online: PropTypes.bool.isRequired,
 }
 
 

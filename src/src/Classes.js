@@ -46,7 +46,9 @@ const ClassesQuizz = ({ match, location, numero }) => {
                 </tr>
               ))}
             </tbody>
-          </table>}
+          </table>}    
+
+          {numero === 32 && <p>32</p>}
                   
                 
            

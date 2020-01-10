@@ -10,23 +10,28 @@ import {
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 
+import MenuItem from '@material-ui/core/MenuItem';
+
+import Menu from '@material-ui/core/Menu';
+
+
 import logo from './logo.png';
 import avatar from './avatar.png';
 
-import './Toolbar.css'
+//import './Toolbar.css'
 import './App.css'
 import HomeQuizz from './Home'
 import StatsQuizz from './Stats'
 import EnCoursQuizz from './En cours'
 import ProfilQuizz from './Profil'
+import Deconnexion from './Deconnexion'
 import CreationQuizz from './Creation'
 import Classe31Quizz from './ClassesDossier/31'
 import Classe32Quizz from './ClassesDossier/32'
 import Classe33Quizz from './ClassesDossier/33'
 import Classe34Quizz from './ClassesDossier/34'
-
+import CreaQuizz from './CreaQuizz';
 import ClassesQuizz from './Classes'
-
 
 
 
@@ -40,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     background: 'linear-gradient(45deg, #282c34 30%, #2F4F4F 90%)'
   },
  
-  avatar: { //bouton profil
+  profil: { //bouton profil
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     border: 0,
     borderRadius: 50,
@@ -135,6 +140,17 @@ const ToolbarQuizz = ({ match, location }) => {
    
   const classes = useStyles();
 
+   //menu deroulant
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return(
 
     <Router>
@@ -175,15 +191,26 @@ const ToolbarQuizz = ({ match, location }) => {
                   </Button>
               </Link>
 
-                  
-              <Link to="/Profil">
-                <Button className={classes.avatar} 
-                        shape="chubby" 
-                        variant="contained" 
-                        color="primary">
-                    <p>Mon profil</p>
-                </Button> 
-              </Link>
+                
+                {/*menu deroulant profil + deconnexion*/}
+               <Button className={classes.profil} 
+                      onClick={handleClick}>
+                  Profil
+              </Button>
+              <Menu id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+              >
+                <Link to="/Profil">
+                  <MenuItem onClick={handleClose}>Mon Profil</MenuItem>
+                </Link>
+
+                <Link to="/Deconnexion">
+                  <MenuItem onClick={handleClose}>Déconnexion</MenuItem>
+                </Link>
+              </Menu>
 
             </Toolbar>
           </AppBar>
@@ -191,18 +218,25 @@ const ToolbarQuizz = ({ match, location }) => {
 
             
             <Route  exact path="/" component={HomeQuizz}/>
+
+          
              
             <Route  path="/Stats" component={StatsQuizz}/>
               
-            <Route  path="/EnCours" component={()=> <EnCoursQuizz encours = "oui"/>} />
+            <Route  path="/EnCours" component={()=> <EnCoursQuizz online = {true}/>} />
             
             <Route  path="/Rejoindre" component={CreationQuizz}/>
 
             <Route  path="/Profil" component={ProfilQuizz}/>
 
+            <Route  path="/Deconnexion" component={Deconnexion}/>
+
             <Route  path="/Creation" component={CreationQuizz}/>
 
-            {/*<Route  exact path="/Classes/:numero" component={ClassesQuizz}/>*/}
+
+            <Route  path="/robert" component={CreaQuizz}/>            
+
+            {/*<Route   path="/Classes/:numero" component={()=> <ClassesQuizz numero = "32"/>}/> */}
 
             <Route  exact path="/Classes/31" component={Classe31Quizz}/>
 

@@ -2,6 +2,12 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from 'reactstrap'
 import { Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+
+} from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -59,7 +65,7 @@ const useStyles = makeStyles(theme => ({
    
     fontWeight: 'bold',
     height: 50,
-    width: 550,
+    width: 1200,
     padding: '0 50px',
     //margin: 100,
     //marginLeft: 0,//theme.spacing(10),
@@ -83,8 +89,14 @@ const HomeQuizz = ({ match, location }) => {
    
 	const classes = useStyles();
 
+  const [info, ChangeInfo] = React.useState({
+    question1: 'ok',
+    question2: '' 
+  });
 
-  const klasse = [
+
+
+  var klasse = [
 
     {id: 1, classe: 31},
     {id: 2, classe: 32},
@@ -110,7 +122,30 @@ const HomeQuizz = ({ match, location }) => {
          )
  }*/
 
- 
+ function doGetTEXT(){
+
+  var url = "http://10.8.94.137:8000/api/QCM/";
+
+  var aPromise = fetch(url);
+
+  aPromise
+    .then(function(response){
+      console.log("OK !");
+      return response.json();
+    })
+    .then(function(data) {
+      console.log(data[0]["answers"][2]);
+
+      ChangeInfo(prev => ({
+        ...prev,
+        question1: data[0]["answers"][2],
+      }));
+    })
+    .catch(function(error){
+      console.log("Error");
+      console.log(error);
+    });
+}
 
     return(
 
@@ -118,14 +153,18 @@ const HomeQuizz = ({ match, location }) => {
             <header>
              
 
-            	<Link to="/Creation">
+            	<Link to="/robert">
                 <Button className={classes.creation} 
                         shape="chubby" 
                         variant="contained" 
-                        color="primary"> 
-                  <p>Créer un quizz</p>
+                        color="primary"
+                        /*onClick={doGetTEXT}*/
+                        > 
+                  <p>Créer un quizz {/*{info.question1}*/}</p>
                 </Button> 
               </Link>
+              
+              
 
               {/* <Link to="Classe1">
                 <Button className={classes.klasse} 
@@ -168,4 +207,4 @@ const HomeQuizz = ({ match, location }) => {
 
 
 
-export default HomeQuizz
+export default HomeQuizz;
