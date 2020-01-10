@@ -449,7 +449,7 @@ function CreaQuizz() {
 
   const [form, setValues] = React.useState({
     question: '',
-    reps:[],
+    reps:["",""],//minimum 2 reponse
     tf:true,
     oq:'LALALALALA',
   });
@@ -465,12 +465,21 @@ function CreaQuizz() {
   };
 
   const updateField = e => {
-    
-    
+    if(String([e.target.name]).match(/^\d+$/))
+    {
+      let temp=form.reps;
+      temp[[e.target.name]]=e.target.value;
+      setValues({
+        ...form,
+        reps: temp,
+      });
+      console.log(form.reps);
+    }else{
     setValues({
       ...form,
       [e.target.name]: e.target.value,
     });
+  }
     setState({});
     
   };
@@ -483,28 +492,32 @@ function CreaQuizz() {
     setOpen(false);
   };
 
+  const clean_form = () => {
+    setValues({
+      question: '',
+      reps:["",""],//minimum 2 reponse
+      tf:true,
+      oq:'LALALALALA',
+    });
+  }
+
   const addSlide = () => {
 
     if(type === "QCM"){
       var obj = { statement: form.question, timer:"00:00:00", qu_type:'MCQ', answers:form.reps, correct_answers:[3]};
       data.push(obj);
-      //AJOUT REB
-      setData(data);
     }
     else if(type === "Vrai/Faux"){
       var obj = { statement: form.question, timer:"00:00:00", qu_type:'TF', answer:form.tf};
       data.push(obj);
-      //AJOUT REB
-      setData(data);
     }
     else if(type === "Question ouverte"){
       var obj = { statement: form.question, timer:"00:00:00", qu_type:'OQ', answer:form.oq};
       data.push(obj);
-      //AJOUT REB
-      setData(data);
-
-      
     }
+    //AJOUT REB
+    clean_form();//pour clean le formulaire
+    setData(data);
   }
 /*EFFACEMENT DE SLIDEs*/
   const removeSlide = (i) => {//Retirer les consol.log
@@ -537,17 +550,18 @@ function CreaQuizz() {
 
   /*Retire la dernier reponse*/
   const removeAnswer = () => {
+    if(form.reps.length>2)
     form.reps.pop();
     setState({});
     
   };
+
   function renderType() {
     /*A revoir plus tard!!!! */
     let donc=form.reps.map((element,index) =>
       <TextField
         margin="dense"
-        
-        name={"reps["+index+"]"}
+        name={index}
         label={"Answer "+index+ ":"}
         value={element}
         onChange={updateField}
