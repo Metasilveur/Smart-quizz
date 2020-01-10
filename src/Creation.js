@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const ProfilQuizz = ({ match, location }) => {
+const CreationQuizz = ({ match, location }) => {
    
   const classes = useStyles();
 
@@ -22,7 +22,7 @@ const ProfilQuizz = ({ match, location }) => {
             <header className="app-header">
               
               <div className={classes.ecriture}>
-                  PROFIL
+                  CREATION QUIZZ DONE BY ROBERT
               </div>
 
             </header>  
@@ -33,4 +33,4 @@ const ProfilQuizz = ({ match, location }) => {
 
 
 
-export default ProfilQuizz
+export default CreationQuizz
