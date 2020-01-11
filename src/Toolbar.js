@@ -25,6 +25,7 @@ import Classe32Quizz from './ClassesDossier/32'
 import Classe33Quizz from './ClassesDossier/33'
 import Classe34Quizz from './ClassesDossier/34'
 import CreaQuizz from './CreaQuizz';
+import Launch from './Launch' ;
 import ClassesQuizz from './Classes'
 
 
@@ -206,6 +207,8 @@ const ToolbarQuizz = ({ match, location }) => {
 
             <Route  path="/robert" component={CreaQuizz}/>            
 
+            <Route  path="/Play" component={Launch}/>            
+            
             {/*<Route   path="/Classes/:numero" component={()=> <ClassesQuizz numero = "32"/>}/> */}
 
             <Route  exact path="/Classes/31" component={Classe31Quizz}/>

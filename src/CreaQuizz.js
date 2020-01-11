@@ -234,7 +234,7 @@ const QcmPage = ({ match, location }) => {
    
   }
 
-  function sendQCMData()  {//asyn
+  async function sendQCMData()  {//asyn
 
     var idData = [];
 
@@ -255,8 +255,8 @@ const QcmPage = ({ match, location }) => {
           }
       });
 
-      aPromise// Coucou Pascal
-        .then(function(response) {
+      await aPromise
+        .then(await function(response) {
             console.log("OK! Server returns a response object:");
             return response.json();
         })
@@ -311,15 +311,11 @@ const QcmPage = ({ match, location }) => {
 
 /*
   function sendQuizData() {
-
     var url = "http://10.8.95.34:8000/api/Quiz/";
-
     console.log(idData);
     console.log([15,16]);
-
     var objTo = { questions:idData, online:false};
     console.log(JSON.stringify(objTo));
-
     var aPromise = fetch(url, { 
         method: 'POST',
         mode: 'cors',
@@ -328,7 +324,6 @@ const QcmPage = ({ match, location }) => {
             'Content-Type':'application/json' 
         }
     });
-
     aPromise
       .then(function(response) {
           console.log("OK! Server returns a response object:");
@@ -340,48 +335,26 @@ const QcmPage = ({ match, location }) => {
       .catch(function(error)  {
           console.log("Noooooo! Something error:");
           console.log(error);
-
       });
-
   }*/
 
-  function renderType(){
-
-    if(data[userId - 1].qu_type == "MCQ"){
+  function renderType(){//Affichage type de chaque genre de question
+    //AJOUT D'une sécurité --> different de l'undifined
+    if(typeof(data[userId - 1]) !== 'undefined' && data[userId - 1].qu_type === "MCQ"){//A MODIFIER EN FONCTION DU NOMBRE DE REPONSES MIS PAR LE PROF
+      let reponse=data[userId - 1].answers.map((element) =>
+        <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
+          {element}
+        </Button>
+      );
       return(
         <div>
-
             <p>{data[userId - 1].statement}</p>
-
-            <div className="App-row">
-
-            <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
-              {data[userId - 1].answers[0]}
-            </Button>
-
-            <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
-              {data[userId - 1].answers[1]}
-            </Button>
-
-            </div>
-
-            <div className="App-row">
-
-            <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
-              {data[userId - 1].answers[2]}
-            </Button>
-
-            <Button className={classes.quzz} shape="chubby" variant="contained" color="primary">
-              {data[userId - 1].answers[3]}
-            </Button>
-            
-            </div>
-
+            {reponse}
         </div>
 
         );
     }
-    else if(data[userId - 1].qu_type == "TF"){
+    else if(typeof(data[userId - 1]) !== 'undefined' && data[userId - 1].qu_type === "TF"){
       return(
         <div>
 
@@ -398,7 +371,7 @@ const QcmPage = ({ match, location }) => {
         </div>
         );
     }
-    else if(data[userId - 1].qu_type == "OQ"){
+    else if(typeof(data[userId - 1]) !== 'undefined' && data[userId - 1].qu_type === "OQ"){
       return(
         <div>
 
@@ -458,6 +431,7 @@ const QcmPage = ({ match, location }) => {
     );
 };
 
+////////////////////
 function CreaQuizz() {
 
   const classes = useStyles();
@@ -468,23 +442,39 @@ function CreaQuizz() {
 
   const [form, setValues] = React.useState({
     question: '',
-    rep1:'',
-    rep2:'',
-    rep3:'',
-    rep4:'',
+    reps:["",""],//minimum 2 reponse
     tf:true,
     oq:'LALALALALA',
   });
+
+
+  //AJOUT REB
+  const [data_, setData] = React.useState(data);
+  //AJOUT REB, pour la douille
+  let  [,setState]=React.useState();
 
   const handleTypeChange = event => {
     setType(event.target.value);
   };
 
   const updateField = e => {
+    if(String([e.target.name]).match(/^\d+$/))
+    {
+      let temp=form.reps;
+      temp[[e.target.name]]=e.target.value;
+      setValues({
+        ...form,
+        reps: temp,
+      });
+      console.log(form.reps);
+    }else{
     setValues({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
+  }
+    setState({});
+    
   };
 
   const handleClickOpen = () => {
@@ -495,31 +485,85 @@ function CreaQuizz() {
     setOpen(false);
   };
 
+  const clean_form = () => {
+    setValues({
+      question: '',
+      reps:["",""],//minimum 2 reponse
+      tf:true,
+      oq:'LALALALALA',
+    });
+  }
+
   const addSlide = () => {
 
-    if(type == "QCM"){
-      var obj = { statement: form.question, timer:"00:00:00", qu_type:'MCQ', answers:[form.rep1,form.rep2,form.rep3,form.rep4], correct_answers:[3]};
+    if(type === "QCM"){
+      var obj = { statement: form.question, timer:"00:00:00", qu_type:'MCQ', answers:form.reps, correct_answers:[3]};
       data.push(obj);
     }
-    else if(type == "Vrai/Faux"){
+    else if(type === "Vrai/Faux"){
       var obj = { statement: form.question, timer:"00:00:00", qu_type:'TF', answer:form.tf};
       data.push(obj);
     }
-    else if(type == "Question ouverte"){
+    else if(type === "Question ouverte"){
       var obj = { statement: form.question, timer:"00:00:00", qu_type:'OQ', answer:form.oq};
       data.push(obj);
     }
+    //AJOUT REB
+    clean_form();//pour clean le formulaire
+    setData(data);
+  }
+/*EFFACEMENT DE SLIDEs*/
+  const removeSlide = (i) => {//Retirer les consol.log
+    console.log("avant:");
+    data.forEach(element => console.log(element.statement))
+
+    data.splice(i, 1);
+
+    console.log("apres:")
+    data.forEach(element => console.log(element.statement))
+
+    //AJOUT REB
+    setData(data);
+    //Verification
+    console.log("\napres pour l'autre:")
+    data_.forEach(element => console.log(element.statement))
+    ///DOUILLE vue sur https://reactgo.com/react-force-update-render/
+    setState({});
   }
 
-  const removeSlide = () => {
-    data.splice(0, 1);
-  }
+  /*Ajout de Réponse*/
+  const addAnswer = () => {
+    setValues({
+      ...form,
+      reps: [...form.reps,""],
+    });
+    console.log(form.reps)
+    setState({});
+  };
 
-
+  /*Retire la dernier reponse*/
+  const removeAnswer = () => {
+    if(form.reps.length>2)
+    form.reps.pop();
+    setState({});
+    
+  };
 
   function renderType() {
+    /*A revoir plus tard!!!! */
+    let donc=form.reps.map((element,index) =>
+      <TextField
+        margin="dense"
+        name={index}
+        label={"Answer "+index+ ":"}
+        value={element}
+        onChange={updateField}
+        fullWidth
+      />
+    );
+    
 
-    if(type == "QCM"){
+    if(type === "QCM"){
       return(
 
         <div>
@@ -533,53 +577,21 @@ function CreaQuizz() {
                   onChange={updateField}
                   fullWidth
                 />
+                
+                {donc}
 
-                <TextField
-                  
-                  margin="dense"
-                  id="rep1"
-                  name="rep1"
-                  label="Answer 1 :"
-                  value={form.rep1}
-                  onChange={updateField}
-                  fullWidth
-                />
+                <IconButton onClick={() => addAnswer()}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </IconButton>
+                <IconButton onClick={() => removeAnswer()}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path d="M7 11v2h10v-2H7zm5-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </IconButton>
 
-                <TextField
-                  
-                  margin="dense"
-                  id="rep2"
-                  name="rep2"
-                  label="Answer 2 :"
-                  value={form.rep2}
-                  onChange={updateField}
-                  fullWidth
-                />
-
-                <TextField
-                  
-                  margin="dense"
-                  id="rep3"
-                  name="rep3"
-                  label="Answer 3 :"
-                  value={form.rep3}
-                  onChange={updateField}
-                  fullWidth
-                />
-
-                <TextField
-                  margin="dense"
-                  id="rep4"
-                  name="rep4"
-                  label="Answer 4 :"
-                  value={form.rep4}
-                  onChange={updateField}
-                  fullWidth
-                />
+                
           </div>
         );
     }
-    else if(type == "Vrai/Faux"){
+    else if(type === "Vrai/Faux"){
       return(
 
         <div>
@@ -598,7 +610,7 @@ function CreaQuizz() {
 
         );
     }
-    else if(type == "Question ouverte"){
+    else if(type === "Question ouverte"){
       return(
         <div>
 
@@ -617,9 +629,17 @@ function CreaQuizz() {
     }
 
   }
+/*
+  React.useEffect(() => {
+    setData(data);
+  });
+*/
+
+/*Affiche les questions sur le coté gauche */
 
   return (
 
+   
     <Router>
 
     <div className="App-header">
@@ -638,34 +658,34 @@ function CreaQuizz() {
           paper: classes.drawerPaper,
         }}
         >
-
+        {/* Ici pour etre plus précis (Affiche les questions sur le coté gauche) */}
         <Grid
         direction="column"
         alignItems="center"
         container justify="center">
 
 
-            {data.map(function (item, index){
+            {data_.map(function (item, index){
 
-                if(index == 0){
+                if(index === 0){
                   return( <Card style={{ marginTop: 100 }}
                   className={classes.card} >
 
                   <NavLink to={`/slide/${index + 1}`} style={{ textDecoration: 'none' , color:'white'}}>
-                  <ButtonBase>
-                    <CardContent>
-                      <h3>Slide {index + 1} ({item.qu_type}) : </h3>
+                    <ButtonBase>
+                      <CardContent>
+                        <h3>Slide {index + 1} ({item.qu_type}) </h3>
 
-                      <h4>{item.statement}</h4>
+                        <h4>{item.statement}</h4>
+                        
+                        <Button onClick={() => removeSlide(index)} > {/* Ne pas appeler la fonction directement mais la mettre dans une fonction fléchée pour eviter l'appel direct au render */}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="white" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        </Button>
 
-                      <Button onClick={removeSlide} >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="white" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                      </Button>
-
-                    </CardContent>
+                      </CardContent>
 
                     </ButtonBase>
-                    </NavLink>
+                  </NavLink>
 
                   </Card>);
                 }
@@ -679,8 +699,8 @@ function CreaQuizz() {
                       <h3>Slide {index + 1} ({item.qu_type}) :</h3>
 
                       <h4>{item.statement}</h4>
-
-                      <Button onClick={removeSlide} >
+                      
+                      <Button onClick={() => removeSlide(index)} >{/* Ne pas appeler la fonction directement mais la mettre dans une fonction fléchée pour eviter l'appel direct au render */}
                       <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="white" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                       </Button>
 
